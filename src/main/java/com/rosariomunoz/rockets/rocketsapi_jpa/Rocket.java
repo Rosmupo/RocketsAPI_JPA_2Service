@@ -88,7 +88,6 @@ public class Rocket {
     }
 
 
-
     public void slowDown() throws Exception {
         for (Propeller currentPropeller : propellerList) {
             sumAllPowerPropellers -= currentPropeller.reducePower();
@@ -104,7 +103,7 @@ public class Rocket {
         if (checkMaxPower < sumAllPowerPropellers) {
             throw new Exception("la suma total de los propulsores no puede ser mayor a la suma de la máxima potencia de los propulsores");
         }
-        if(sumAllPowerPropellers < 0){
+        if (sumAllPowerPropellers < 0) {
             throw new Exception("la suma de todas los propulsores no puede ser menor que 0");
         }
     }

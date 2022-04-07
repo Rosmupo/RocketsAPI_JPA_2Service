@@ -17,7 +17,7 @@ public class Propeller {
     @Id
     private String propellerId = UUID.randomUUID().toString();
     private int maxPower;
-    private int currentPower=0;
+    private int currentPower = 0;
     private static final int SPEED_CHANGE = 10;
 
     @ManyToOne
@@ -36,7 +36,6 @@ public class Propeller {
         checkMaxPower(maxPower);
         this.maxPower = maxPower;
     }
-
 
 
     public Rocket getRocket() {
@@ -69,7 +68,7 @@ public class Propeller {
     }
 
     public int increasePower() {
-        this.currentPower +=  SPEED_CHANGE;
+        this.currentPower += SPEED_CHANGE;
         if (currentPower >= maxPower) {
             currentPower = maxPower;
         }
@@ -77,7 +76,7 @@ public class Propeller {
     }
 
     public int reducePower() {
-        this.currentPower -=  SPEED_CHANGE;
+        this.currentPower -= SPEED_CHANGE;
         if (currentPower < 0) {
             currentPower = 0;
         }

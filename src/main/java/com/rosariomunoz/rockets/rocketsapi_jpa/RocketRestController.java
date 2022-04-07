@@ -8,9 +8,15 @@ import java.util.List;
 @RestController
 public class RocketRestController {
     private RocketService rocketService;
+    private PropellerService propellerService;
+    private RocketRepository rocketRepository;
 
-    public RocketRestController(RocketService rocketService) {
+
+    public RocketRestController(RocketService rocketService, PropellerService propellerService, RocketRepository rocketRepository) {
         this.rocketService = rocketService;
+        this.propellerService = propellerService;
+        this.rocketRepository = rocketRepository;
+
     }
 
     @PostMapping("/rockets")
@@ -35,7 +41,7 @@ public class RocketRestController {
 
     @GetMapping("/rockets/{rocketId}")
     public Rocket searchRocket(@PathVariable String rocketId) throws Exception {
-        return rocketService.searchRocket(rocketId);
+        return propellerService.searchRocket(rocketId);
 
     }
 
@@ -46,36 +52,36 @@ public class RocketRestController {
 
     @PostMapping("/rockets/{rocketId}/propellers")
     public Propeller addPropeller(@PathVariable String rocketId, @RequestBody Propeller propeller) throws Exception {
-        return rocketService.addPropeller(rocketId, propeller);
+        return propellerService.addPropeller(rocketId, propeller);
 
     }
 
-    @GetMapping("/rockets/{rocketId}/propellers") //FALLA
+    @GetMapping("/rockets/{rocketId}/propellers")
     public List<Propeller> propellerList(@PathVariable String rocketId) throws Exception {
-        return rocketService.getRocketPropellers(rocketId);
+        return propellerService.getRocketPropellers(rocketId);
     }
 
-    @DeleteMapping("/rockets/{rocketId}/propellers")// FALLA
+    @DeleteMapping("/rockets/{rocketId}/propellers")
     public void deleteAllRocketPropellers(@PathVariable String rocketId) throws Exception {
-         rocketService.deleteAllRocketPropellers(rocketId);
+        propellerService.deleteAllRocketPropellers(rocketId);
     }
 
 
     @GetMapping("/rockets/{rocketId}/propellers/{propellerId}")
     public Propeller getPropeller(@PathVariable String rocketId, @PathVariable String propellerId) throws Exception {
-        return rocketService.getPropeller(propellerId);
+        return propellerService.getPropeller(propellerId);
 
     }
 
     @PutMapping("/rockets/{rocketId}/propellers/{propellerId}")
     public Propeller updatePropeller(@PathVariable String rocketId, @PathVariable String propellerId, @RequestBody Propeller propeller) throws Exception {
-        return rocketService.updatePropeller(rocketId, propellerId, propeller);
+        return propellerService.updatePropeller(rocketId, propellerId, propeller);
 
     }
 
     @DeleteMapping("/rockets/{rocketId}/propellers/{propellerId}")
     public void deleteOnePropeller(@PathVariable String rocketId, @PathVariable String propellerId) {
-        rocketService.deleteOnePropeller(rocketId, propellerId);
+        propellerService.deleteOnePropeller(rocketId, propellerId);
     }
 
     @PostMapping("/rockets/{rocketId}/throttle")
@@ -92,5 +98,19 @@ public class RocketRestController {
         int times = json.getInt("timesPressBrake");
         return rocketService.slowDownRocket(rocketId, times);
     }
+    @GetMapping("/rockets/byTotalCurrentPower/{currentPower}")
+    public List<Rocket> findRocketsByTotalCurrentPower
+            (@PathVariable long currentPower){
+        return rocketRepository.
+                findRocketsByTotalCurrentPower(currentPower);
+    }
+    @GetMapping("/rockets/BySumAllPowerPropellers/{sumAllPowerPropellers}")
+    public List<Rocket> findRocketsByOrderBySumAllPowerPropellers
+            (@PathVariable long sumAllPowerPropellers){
+        return rocketRepository.findRocketsByOrderBySumAllPowerPropellers(sumAllPowerPropellers);
+
+    }
+
+
 
 }
